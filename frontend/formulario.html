@@ -9,12 +9,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #28a745; 
-            --bg-color: #f0f4f8;
-            --card-bg: #ffffff;
-            --border-color: #e0e0e0;
-            --text-color: #333;
+            --primary-color: #2c3e50;    /* Azul Escuro (Textos e Títulos) */
+            --secondary-color: #28a745;  /* Verde (Destaques e Botões) */
+            --bg-color: #f4f6f9;         /* Fundo da Página (Cinza bem claro) */
+            --card-bg: #ffffff;          /* Fundo do Cartão (Branco) */
+            --border-color: #ced4da;     /* Bordas Cinzas Suaves */
+            --text-color: #495057;       /* Texto Geral */
+            --focus-glow: rgba(40, 167, 69, 0.25); /* Brilho verde ao clicar */
         }
 
         body {
@@ -29,86 +30,187 @@
 
         .form-container {
             width: 100%;
-            max-width: 900px;
+            max-width: 950px; /* Um pouco mais largo */
             background-color: var(--card-bg);
-            padding: 40px;
+            padding: 50px;
             border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* Sombra suave */
         }
 
+        /* --- HEADER --- */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 3px solid var(--secondary-color);
-            padding-bottom: 15px;
+            padding-bottom: 20px;
             margin-bottom: 30px;
         }
 
-        .header h1 {
-            font-size: 1.8em;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin: 0;
-        }
-
-        .header .info {
+        .header-title-group {
             display: flex;
+            align-items: center;
             gap: 20px;
         }
 
+        .header-logo {
+            height: 65px;
+            width: auto;
+        }
+
+        .header h1 {
+            font-size: 1.6em;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        /* --- CAMPOS DE TEXTO E INPUTS (Melhorados) --- */
         .field-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .field-group label {
             display: block;
             font-weight: 600;
+            font-size: 0.9em;
             margin-bottom: 8px;
             color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .field-group input[type="text"],
-        .field-group textarea,
-        .field-group input[type="file"] {
+        /* Estilo padrão para todos os inputs de texto */
+        input[type="text"], 
+        input[type="date"],
+        textarea, 
+        select {
             width: 100%;
-            padding: 12px;
-            box-sizing: border-box;
+            height: 48px; /* Altura fixa confortável */
+            padding: 10px 15px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            color: #333;
+            background-color: #fff;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background-color: var(--bg-color);
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-
-        .field-group input[type="text"]:focus,
-        .field-group textarea:focus {
-            border-color: var(--secondary-color);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            border-radius: 6px;
+            box-sizing: border-box; /* Garante que o padding não estoure a largura */
+            transition: all 0.3s ease;
             outline: none;
         }
 
-        .field-group textarea {
+        /* Textarea deve ser mais alto */
+        textarea {
+            height: auto;
+            min-height: 120px;
             resize: vertical;
-            min-height: 100px;
+            line-height: 1.5;
         }
 
-        .section-title {
-            font-size: 1.2em;
-            font-weight: 600;
-            color: var(--primary-color);
-            border-left: 4px solid var(--secondary-color);
-            padding-left: 10px;
-            margin-bottom: 25px;
-            margin-top: 35px;
+        /* Efeito ao clicar no campo (Foco) */
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 4px var(--focus-glow);
         }
 
-        .row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        /* Campo desabilitado (ex: Número Automático ou Modo Visualização) */
+        input:disabled, textarea:disabled {
+            background-color: #e9ecef;
+            color: #6c757d;
+            cursor: not-allowed;
+            border-color: #dee2e6;
+        }
+
+        /* --- RADIO BUTTONS (Personalizados) --- */
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
             gap: 20px;
+            margin-top: 10px;
+            padding: 5px 0;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        /* Esconde a bolinha padrão feia */
+        .radio-item input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #adb5bd; /* Borda cinza inicial */
+            border-radius: 50%;
+            margin-right: 10px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: #fff;
+            height: 20px; /* Força altura */
+            flex-shrink: 0; /* Não deixa amassar */
+        }
+
+        /* Quando selecionado: Borda verde */
+        .radio-item input[type="radio"]:checked {
+            border-color: var(--secondary-color);
+        }
+
+        /* O "ponto" verde dentro da bolinha */
+        .radio-item input[type="radio"]:checked::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .radio-item label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 500;
+            text-transform: none; /* Texto normal, não uppercase */
+            color: var(--text-color);
+            font-size: 0.95em;
         }
         
-        /* Estilos para o novo layout de imagem e descrição */
+        /* Hover nos radios */
+        .radio-item:hover input[type="radio"] {
+            border-color: var(--secondary-color);
+        }
+
+        /* --- TÍTULOS DE SEÇÃO --- */
+        .section-title {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--primary-color);
+            border-left: 5px solid var(--secondary-color);
+            padding-left: 15px;
+            margin: 40px 0 25px 0;
+            background: linear-gradient(to right, #f8f9fa, transparent); /* Fundo sutil */
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        /* --- LAYOUT GRID (Responsivo) --- */
+        .row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        /* --- IMAGENS --- */
         .image-columns-container {
             display: flex;
             flex-direction: column;
@@ -117,130 +219,87 @@
 
         .image-column {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Duas colunas de tamanho igual */
-            gap: 20px;
-            border: 1px dashed var(--border-color);
-            padding: 20px;
-            border-radius: 8px;
-            align-items: flex-start;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            border: 2px dashed #dee2e6;
+            padding: 25px;
+            border-radius: 10px;
+            background-color: #fdfdfd;
         }
         
         .image-preview {
             max-width: 100%;
-            height: auto;
+            max-height: 200px; /* Limita altura para não quebrar layout */
+            object-fit: contain;
             margin-top: 10px;
-            border-radius: 8px;
-            display: none; /* Inicia escondido */
+            border-radius: 6px;
+            border: 1px solid #eee;
+            display: none;
+            background-color: #fff;
         }
-
+        
+        /* Botões */
         .image-upload-button {
-            background-color: #218838;
+            background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
+            padding: 12px 25px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
-            transition: background-color 0.3s, transform 0.2s;
-            margin-top: 20px;
+            font-size: 0.9em;
+            transition: background-color 0.2s;
+            margin-top: 10px;
         }
-
         
-
         .image-upload-button:hover {
-            background-color: #2980b9;
-            transform: translateY(-2px);
+            background-color: #34495e;
         }
 
-        /* --- INÍCIO DA ADIÇÃO --- */
         .delete-image-button {
-            background-color: #e74c3c; /* Vermelho */
+            background-color: #dc3545; /* Vermelho padrão */
             color: white;
             border: none;
-            padding: 8px 12px; /* Um pouco menor que os botões principais */
-            border-radius: 8px;
+            padding: 8px 15px;
+            border-radius: 6px;
             cursor: pointer;
-            font-weight: 600;
-            transition: background-color 0.3s;
-            margin-top: 10px;
-            float: right; /* Alinha o botão à direita */
-        }
-
-        .delete-image-button:hover {
-            background-color: #c0392b;
-        }
-
-        /* Adiciona um 'clearfix' ao field-group para conter o botão flutuante */
-        .field-group::after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-
-        .checkbox-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-top: 10px;
-        }
-
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .checkbox-item input[type="checkbox"] {
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--primary-color);
-            border-radius: 4px;
-            position: relative;
-            cursor: pointer;
-            transition: background-color 0.3s, border-color 0.3s;
+            font-size: 0.85em;
+            float: right;
+            margin-top: 5px;
         }
         
-        .checkbox-item input[type="checkbox"]:checked {
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
+        .delete-image-button:hover {
+            background-color: #c82333;
         }
 
-        .checkbox-item input[type="checkbox"]:checked::after {
-            content: '✔';
-            color: white;
-            font-size: 14px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        /* Input de arquivo mais bonito */
+        input[type="file"] {
+            padding: 8px;
+            background-color: white;
+            height: auto;
         }
 
-        /* CSS para o Logo no Header */
-        .header-title-group {
-            display: flex;
-            align-items: center;
-            gap: 15px; /* Espaçamento entre o logo e o título */
+        /* Ajuste para telas pequenas */
+        @media (max-width: 768px) {
+            .image-column {
+                grid-template-columns: 1fr; /* Vira uma coluna só no celular */
+            }
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            .form-container {
+                padding: 20px;
+            }
         }
-
-        .header-logo {
-            height: 60px; /* Você pode ajustar essa altura */
-            width: auto;
-            border-radius: 50%; /* Para manter o formato redondo do logo */
-        }
-
-        /* Ajuste no título para telas menores (opcional) */
-        .header h1 {
-            font-size: 1.5em; /* Um pouco menor para caber melhor ao lado do logo */
-        }
-
     </style>
 </head>
 <body>
     <div class="form-container">
         <div class="header">
             <div class="header-title-group">
-                <img src="logo_ccs.png" alt="Logo SST CCS-UFRJ" class="header-logo">
+                <img src="logo_ccs.png" alt="Logo" class="header-logo" onerror="this.style.display='none'">
                 <h1>RNC - RELATÓRIO DE NÃO CONFORMIDADE</h1>
             </div>
             <div class="info">
@@ -254,103 +313,90 @@
         <div class="row">
             <div class="field-group">
                 <label for="data-abertura">DATA DE ABERTURA</label>
-                <input type="text" id="data-abertura" name="data-abertura" placeholder="dd/mm/aaaa">
+                <input type="text" id="data-abertura" placeholder="dd/mm/aaaa">
             </div>
             <div class="field-group">
                 <label for="data-fechamento">DATA DE FECHAMENTO</label>
-                <input type="text" id="data-fechamento" name="data-fechamento" placeholder="dd/mm/aaaa">
+                <input type="text" id="data-fechamento" placeholder="dd/mm/aaaa">
             </div>
         </div>
 
         <h2 class="section-title">TIPO DE RELATÓRIO</h2>
         <div class="field-group">
             <label>ORIGEM DA NÃO CONFORMIDADE</label>
-            <div class="radio-group">
-                <div class="radio-item">
-                    <input type="radio" id="processo" name="origem" value="processo">
-                    <label for="processo">PROCESSO</label>
-                </div>
-                <div class="radio-item">
-                    <input type="radio" id="acidente" name="origem" value="acidente">
-                    <label for="acidente">ACIDENTE / INCIDENTE</label>
-                </div>
-                <div class="radio-item">
-                    <input type="radio" id="meio-ambiente" name="origem" value="meio-ambiente">
-                    <label for="meio-ambiente">MEIO AMBIENTE</label>
-                </div>
-                <div class="radio-item">
-                    <input type="radio" id="auditoria" name="origem" value="auditoria">
-                    <label for="auditoria">AUDITORIA INTERNA</label>
-                </div>
-                <div class="radio-item">
-                    <input type="radio" id="reclamacao" name="origem" value="reclamacao">
-                    <label for="reclamacao">RECLAMAÇÃO CLIENTE</label>
-                </div>
-            </div>
+            <div class="select-group">
+                <select class="from-select" id="relatorio" name="relatorio" onchange="mostrarOutro()">
+                     <option value="" disabled selected hidden>Selecione uma opção</option>
+                     <option value="Processo">Processo</option>
+                     <option value="Acidente Químico">Acidente Químico</option>
+                     <option value="Acidente/ incidente">Acidente/ incidente</option>
+                     <option value="BC-Atendimento de eventos">BC-Atendimento de eventos</option>
+                     <option value="Atendimento de Emergência">Atendimento de Emergência</option>
+                     <option value="Chamado de Emergência improcedente">Chamado de Emergência improcedente</option>
+                     <option value="Denuncia">Denuncia</option>
+                     <option value="Incêndio">Incêndio</option>
+                     <option value="Incidente Químico">Incidente Químico</option>
+                     <option value="Inspeção de Segurança">Inspeção de Segurança</option>
+                     <option value="Princípio de incêndio">Princípio de incêndio</option>
+                     <option value="Rev./projeto_incêndio">Rev./projeto_incêndio</option>
+                     <option value="Treinamento SST">Treinamento SST</option>
+                     <option value="Vazamento de água/vapor">Vazamento de água/vapor</option>
+                     <option value="outro">Outro</option>
+                </select>
+             </div>
+
+<!-- INPUT ESCONDIDO -->
+<div class="select-group" id="outro-container" style="display:none;">
+     <input
+         type="text"
+         id="outro-relatorio"
+         name="outro_relatorio"
+         placeholder="Digite o outro tipo de relatório:"
+     />
+</div>
+<script>
+         function mostrarOutro() {
+           const select = document.getElementById("relatorio");
+           const outroContainer = document.getElementById("outro-container");
+           const outroInput = document.getElementById("outro-relatorio");
+
+           if (select.value === "outro") {
+                  outroContainer.style.display = "block";
+                  outroInput.required = true;
+     }  else {
+                  outroContainer.style.display = "none";
+                  outroInput.required = false;
+                  outroInput.value = "";
+ }
+}
+</script>
         </div>
 
         <div class="row">
-            <div class="field-group">
-                <label for="responsavel">RESPONSÁVEL:</label>
-                <input type="text" id="responsavel" name="responsavel">
-            </div>
-            <div class="field-group">
-                <label for="cargo">CARGO</label>
-                <input type="text" id="cargo" name="cargo">
-            </div>
-            <div class="field-group">
-                <label for="setor">SETOR</label>
-                <input type="text" id="setor" name="setor">
-            </div>
-            <div class="field-group">
-                <label for="matricula">MATRÍCULA</label>
-                <input type="text" id="matricula" name="matricula">
-            </div>
+            <div class="field-group"><label for="responsavel">RESPONSÁVEL:</label><input type="text" id="responsavel"></div>
+            <div class="field-group"><label for="cargo">CARGO</label><input type="text" id="cargo"></div>
+            <div class="field-group"><label for="setor">SETOR</label><input type="text" id="setor"></div>
+            <div class="field-group"><label for="matricula">MATRÍCULA</label><input type="text" id="matricula"></div>
         </div>
 
         <h2 class="section-title">ANÁLISE</h2>
-        <div class="field-group">
-            <label for="descricao-ocorrencia">DESCRIÇÃO DA OCORRÊNCIA</label>
-            <textarea id="descricao-ocorrencia" name="descricao-ocorrencia"></textarea>
-        </div>
-        <div class="field-group">
-            <label for="descricao-nao-conformidade">DESCRIÇÃO DA NÃO CONFORMIDADE/CAUSAS PROVÁVEIS</label>
-            <textarea id="descricao-nao-conformidade" name="descricao-nao-conformidade"></textarea>
-        </div>
-        <div class="field-group">
-            <label for="referencias">REFERÊNCIAS NORMATIVAS:</label>
-            <input type="text" id="referencias" name="referencias">
-        </div>
+        <div class="field-group"><label for="descricao-ocorrencia">DESCRIÇÃO DA OCORRÊNCIA</label><textarea id="descricao-ocorrencia"></textarea></div>
+        <div class="field-group"><label for="descricao-nao-conformidade">CAUSAS PROVÁVEIS</label><textarea id="descricao-nao-conformidade"></textarea></div>
+        <div class="field-group"><label for="referencias">REFERÊNCIAS NORMATIVAS:</label><input type="text" id="referencias"></div>
 
         <h2 class="section-title">TOMADA DE AÇÕES</h2>
-        <div class="field-group">
-            <label for="acoes-corretivas">AÇÕES CORRETIVAS A SEREM TOMADAS</label>
-            <textarea id="acoes-corretivas" name="acoes-corretivas"></textarea>
-        </div>
-        <div class="field-group">
-            <label for="responsavel-acoes">RESPONSÁVEL</label>
-            <input type="text" id="responsavel-acoes" name="responsavel-acoes">
-        </div>
-        <div class="field-group">
-            <label for="acoes-preventivas">AÇÕES PREVENTIVAS, quando aplicáveis</label>
-            <textarea id="acoes-preventivas" name="acoes-preventivas"></textarea>
-        </div>
-        <div class="field-group">
-            <label for="responsavel-acoes-prev">RESPONSÁVEL</label>
-            <input type="text" id="responsavel-acoes-prev" name="responsavel-acoes-prev">
-        </div>
+        <div class="field-group"><label for="acoes-corretivas">AÇÕES CORRETIVAS</label><textarea id="acoes-corretivas"></textarea></div>
+        <div class="field-group"><label for="responsavel-acoes">RESPONSÁVEL</label><input type="text" id="responsavel-acoes"></div>
+        <div class="field-group"><label for="acoes-preventivas">AÇÕES PREVENTIVAS</label><textarea id="acoes-preventivas"></textarea></div>
+        <div class="field-group"><label for="responsavel-acoes-prev">RESPONSÁVEL</label><input type="text" id="responsavel-acoes-prev"></div>
         
         <h2 class="section-title">REGISTRO ICONOGRÁFICO</h2>
-        <div id="image-columns-container" class="image-columns-container">
-            <!-- A primeira coluna de imagem será adicionada pelo JavaScript -->
-        </div>
-        
+        <div id="image-columns-container" class="image-columns-container"></div>
         <button id="add-image-btn" class="image-upload-button">Adicionar Imagem</button>
-    <div style="margin-top: 40px; text-align: right;">
-    <button id="salvar-rnc-btn" class="image-upload-button" style="background-color: #28a745;">
-        Salvar RNC
-    </button>
-</div>
+
+        <div style="margin-top: 40px; text-align: right;">
+            <button id="salvar-rnc-btn" class="image-upload-button" style="background-color: #28a745;">Salvar RNC</button>
+        </div>
     </div>
 
     <script>
@@ -359,96 +405,32 @@
             const addButton = document.getElementById('add-image-btn');
             let imageCounter = 1;
 
-            // Esta função varre todas as colunas de imagem restantes e
-            // re-numera seus IDs, labels, names, etc., para que fiquem sequenciais.
-            const reindexImageColumns = () => {
-                const allColumns = container.querySelectorAll('.image-column');
-                
-                allColumns.forEach((column, index) => {
-                    const newIndex = index + 1; // O novo número (começa em 1)
-
-                    // Encontra todos os elementos dentro desta coluna
-                    const fileLabel = column.querySelector('label[for^="imagem"]');
-                    const fileInput = column.querySelector('input[type="file"]');
-                    const previewImg = column.querySelector('.image-preview');
-                    const descLabel = column.querySelector('label[for^="desc-img"]');
-                    const descInput = column.querySelector('input[type="text"]');
-
-                    // Atualiza a seção de input de arquivo
-                    if (fileLabel) {
-                        fileLabel.textContent = `Imagem ${newIndex}`;
-                        fileLabel.setAttribute('for', `imagem${newIndex}`);
-                    }
-                    if (fileInput) {
-                        fileInput.id = `imagem${newIndex}`;
-                        fileInput.name = `imagem${newIndex}`;
-                    }
-                    if (previewImg) {
-                        previewImg.id = `preview${newIndex}`;
-                        previewImg.alt = `Preview Imagem ${newIndex}`;
-                    }
-
-                    // Atualiza a seção de input de descrição
-                    if (descLabel) {
-                        descLabel.textContent = `Descrição Imagem ${newIndex}`;
-                        descLabel.setAttribute('for', `desc-img${newIndex}`);
-                    }
-                    if (descInput) {
-                        descInput.id = `desc-img${newIndex}`;
-                        descInput.name = `desc-img${newIndex}`;
-                    }
-                });
-
-                // Atualiza o contador global para o próximo item a ser adicionado
-                imageCounter = allColumns.length + 1;
-            };
-
-
-            // Função para criar uma nova coluna de imagem e descrição
             const createImageColumn = () => {
-                // Pega o número atual ANTES de incrementar
                 const currentImageIndex = imageCounter;
-
                 const column = document.createElement('div');
                 column.className = 'image-column';
 
-                const imageFieldContainer = document.createElement('div');
-                imageFieldContainer.className = 'field-group';
-                imageFieldContainer.innerHTML = `
-                    <label for="imagem${currentImageIndex}">Imagem ${currentImageIndex}</label>
-                    <input type="file" id="imagem${currentImageIndex}" name="imagem${currentImageIndex}" accept="image/*">
-                    <img id="preview${currentImageIndex}" class="image-preview" src="#" alt="Preview Imagem ${currentImageIndex}">
+                column.innerHTML = `
+                    <div class="field-group">
+                        <label>Imagem ${currentImageIndex}</label>
+                        <input type="file" accept="image/*">
+                        <img class="image-preview" src="#" alt="Preview">
+                    </div>
+                    <div class="field-group">
+                        <label>Descrição Imagem ${currentImageIndex}</label>
+                        <input type="text">
+                        <button type="button" class="delete-image-button">Excluir Imagem</button>
+                    </div>
                 `;
 
-                const descriptionFieldGroup = document.createElement('div');
-                descriptionFieldGroup.className = 'field-group';
-                descriptionFieldGroup.innerHTML = `
-                    <label for="desc-img${currentImageIndex}">Descrição Imagem ${currentImageIndex}</label>
-                    <input type="text" id="desc-img${currentImageIndex}" name="desc-img${currentImageIndex}">
-                `;
-
-                // (Isso é da sua solicitação anterior)
-                const deleteButton = document.createElement('button');
-                deleteButton.type = 'button';
-                deleteButton.textContent = 'Excluir Imagem';
-                deleteButton.className = 'delete-image-button';
-
-                // Modificado para chamar a reindexação
-                deleteButton.addEventListener('click', () => {
-                    column.remove(); // Remove a coluna
-                    reindexImageColumns(); // Chama a nova função para re-numerar
+                // Botão de excluir
+                column.querySelector('.delete-image-button').addEventListener('click', () => {
+                    column.remove();
                 });
 
-                descriptionFieldGroup.appendChild(deleteButton);
-
-                column.appendChild(imageFieldContainer);
-                column.appendChild(descriptionFieldGroup);
-
-                container.appendChild(column);
-                
-                // Adiciona o event listener para o novo input de arquivo
-                const fileInput = document.getElementById(`imagem${currentImageIndex}`);
-                const previewImg = document.getElementById(`preview${currentImageIndex}`);
+                // Preview da Imagem
+                const fileInput = column.querySelector('input[type="file"]');
+                const previewImg = column.querySelector('.image-preview');
 
                 fileInput.addEventListener('change', (event) => {
                     const file = event.target.files[0];
@@ -460,140 +442,278 @@
                             previewImg.dataset.base64 = e.target.result;
                         };
                         reader.readAsDataURL(file);
-                    } else {
-                        // Se o usuário cancelar, limpa o preview
-                        previewImg.src = '#';
-                        previewImg.style.display = 'none';
-                        delete previewImg.dataset.base64;
                     }
                 });
 
-                // Incrementa o contador global para a próxima chamada
+                container.appendChild(column);
                 imageCounter++;
             };
 
-            // Adiciona a primeira coluna ao carregar a página
+            // Cria a primeira caixa de imagem
             createImageColumn();
 
-            // Adiciona um listener para o botão de adicionar imagem
             addButton.addEventListener('click', createImageColumn);
         });
     </script>
-    
+
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-        const salvarBtn = document.getElementById("salvar-rnc-btn");
+            const salvarBtn = document.getElementById("salvar-rnc-btn");
+            const addImageBtn = document.getElementById("add-image-btn");
 
-        // Função para obter todos os dados do formulário
-        function getFormData() {
-    const data = {};
-    // Pega os inputs normais (texto, radio, etc)
-    document.querySelectorAll("input:not([type='file']), textarea, select").forEach(input => {
-        if (input.type === "radio") {
-            if (input.checked) data[input.name] = input.value;
-        } else if (input.type === "checkbox") {
-            if (!data[input.name]) data[input.name] = [];
-            if (input.checked) data[input.name].push(input.value);
-        } else {
-            data[input.id || input.name] = input.value;
-        }
-    });
+            // URL Params
+            const urlParams = new URLSearchParams(window.location.search);
+            const formId = urlParams.get("id");
+            const mode = urlParams.get("mode");
 
-    // Pega as imagens em base64 salvas no dataset
-    document.querySelectorAll('.image-preview').forEach(imgPreview => {
-        if (imgPreview.dataset.base64) {
-            // Salva a imagem com uma chave única, ex: 'imagem1_base64'
-            data[imgPreview.id + '_base64'] = imgPreview.dataset.base64;
-        }
-    });
+            // TOKEN (O Segredo!)
+            const token = localStorage.getItem('token');
 
-    return data;
-}
-
-        // Função para preencher o formulário com dados salvos
-        function fillForm(data) {
-    if (!data) return;
-    Object.keys(data).forEach(key => {
-        // Se a chave for de uma imagem base64
-        if (key.endsWith('_base64')) {
-            const previewId = key.replace('_base64', '');
-            const previewImg = document.getElementById(previewId);
-            if (previewImg) {
-                previewImg.src = data[key]; // Coloca a imagem no 'src'
-                previewImg.dataset.base64 = data[key]; // Guarda o base64 novamente
-                previewImg.style.display = 'block'; // Garante que a imagem está visível
+            if (!token) {
+                alert("Sessão expirada. Faça login novamente.");
+                window.location.href = 'index.html';
+                return;
             }
-            return; // Pula para a próxima chave
-        }
 
-        const field = document.getElementById(key) || document.querySelector(`[name='${key}']`);
-        if (!field) return;
+            // 1. GET FORM DATA
+            function getFormData() {
+    // Lógica para pegar o valor do Select OU do campo Outro
+    const selectEl = document.getElementById('relatorio');
+    let origemValor = selectEl.value;
+    
+    // Se for "outro", pega o que foi digitado no input de texto
+    if (origemValor === 'outro') {
+        origemValor = document.getElementById('outro-relatorio').value;
+    }
 
-        if (Array.isArray(data[key])) {
-            data[key].forEach(val => {
-                const checkbox = document.querySelector(`[name='${key}'][value='${val}']`);
-                if (checkbox) checkbox.checked = true;
-            });
-        } else if (field.type === "radio") {
-            const radio = document.querySelector(`[name='${key}'][value='${data[key]}']`);
-            if (radio) radio.checked = true;
-        } else {
-            // Não preenche o input de arquivo, pois já cuidamos da imagem
-            if (field.type !== 'file') {
-               field.value = data[key];
-            }
-        }
-    });
-}
-
-        // Verificar se há um ID na URL (modo visualização)
-        const urlParams = new URLSearchParams(window.location.search);
-        const formId = urlParams.get("id");
-
-        if (formId) {
-            const savedForms = JSON.parse(localStorage.getItem("forms")) || [];
-            const formData = savedForms.find(f => f.id == formId);
-            if (formData) fillForm(formData.data);
-        }
-
-        // Ação do botão Salvar
-        if (salvarBtn) {
-            salvarBtn.addEventListener("click", (e) => {
-                e.preventDefault();
-
-                const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-                const userName = currentUser ? currentUser.name : "Usuário Desconhecido";
-
-                const data = getFormData();
-                const forms = JSON.parse(localStorage.getItem("forms")) || []; //
-                
-                // Encontra o ID mais alto na lista atual
-                let maxId = 0;
-                if (forms.length > 0) {
-                    maxId = forms.reduce((max, form) => (form.id > max ? form.id : max), 0);
-                }
-                const newId = maxId + 1;
-                // --- FIM DA NOVA LÓGICA ---
-
-                const newForm = {
-                    id: newId, // <-- ID alterado
-                    title: data.numero ? `RNC #${data.numero}` : "Relatório de Não Conformidade",
-                    description: data.responsavel || "RNC preenchido",
-                    status: "completed",
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString(),
-                    createdBy: userName,
-                    type: "RNC",
-                    data: data 
+    const data = {
+        numero: document.getElementById('numero').value,
+        dataAbertura: document.getElementById('data-abertura').value,
+        dataFechamento: document.getElementById('data-fechamento').value,
+        
+        // AQUI ESTÁ A MUDANÇA:
+        origem: origemValor || "Não Informado", 
+        
+        responsavel: {
+                        nome: document.getElementById('responsavel').value,
+                        cargo: document.getElementById('cargo').value,
+                        setor: document.getElementById('setor').value,
+                        matricula: document.getElementById('matricula').value
+                    },
+                    analise: {
+                        descricaoOcorrencia: document.getElementById('descricao-ocorrencia').value,
+                        descricaoNaoConformidade: document.getElementById('descricao-nao-conformidade').value,
+                        referenciasNormativas: document.getElementById('referencias').value
+                    },
+                    acoes: {
+                        corretivas: document.getElementById('acoes-corretivas').value,
+                        responsavelCorretivas: document.getElementById('responsavel-acoes').value,
+                        preventivas: document.getElementById('acoes-preventivas').value,
+                        responsavelPreventivas: document.getElementById('responsavel-acoes-prev').value
+                    },
+                    registrosIconograficos: []
                 };
 
-                forms.unshift(newForm); //
-                localStorage.setItem("forms", JSON.stringify(forms)); //
+                document.querySelectorAll('.image-column').forEach((column) => {
+                    const previewImg = column.querySelector('.image-preview');
+                    const descInput = column.querySelector('input[type="text"]');
+                    
+                    if (previewImg && previewImg.dataset.base64) {
+                        data.registrosIconograficos.push({
+                            imagemBase64: previewImg.dataset.base64,
+                            descricao: descInput ? descInput.value : ''
+                        });
+                    }
+                });
+                return data;
+            }
 
-                alert("RNC salva com sucesso! Você pode visualizá-la no Dashboard.");
-            });
-        }
-    });
-</script>
+            // 2. FILL FORM
+            // --- 2. PREENCHER FORMULÁRIO (FILL FORM) ---
+            function fillForm(dbData) {
+                if (!dbData) return;
+                
+                document.getElementById('numero').value = dbData.numero_rnc || dbData.numero || '';
+                document.getElementById('data-abertura').value = dbData.data_abertura || dbData.dataAbertura || '';
+                document.getElementById('data-fechamento').value = dbData.data_fechamento || dbData.dataFechamento || '';
+
+                // === CORREÇÃO DO SELECT (ORIGEM) ===
+                if (dbData.origem) {
+                    const select = document.getElementById('relatorio');
+                    const outroContainer = document.getElementById('outro-container');
+                    const outroInput = document.getElementById('outro-relatorio');
+
+                    // Tenta achar a opção exata no menu
+                    let encontrou = false;
+                    for (let i = 0; i < select.options.length; i++) {
+                        if (select.options[i].value === dbData.origem) {
+                            select.selectedIndex = i;
+                            encontrou = true;
+                            break;
+                        }
+                    }
+
+                    // Se não achou na lista (é um texto personalizado), marca como "Outro" e preenche o texto
+                    if (!encontrou) {
+                        select.value = 'outro';
+                        outroContainer.style.display = 'block';
+                        outroInput.value = dbData.origem;
+                    } else {
+                        // Se achou, esconde o campo "Outro"
+                        outroContainer.style.display = 'none';
+                    }
+                }
+                // ===================================
+
+                // Garante compatibilidade com dados antigos (nested ou flat)
+                document.getElementById('responsavel').value = dbData.responsavel?.nome || dbData.responsavel_nome || '';
+                document.getElementById('cargo').value = dbData.responsavel?.cargo || dbData.responsavel_cargo || '';
+                document.getElementById('setor').value = dbData.responsavel?.setor || dbData.responsavel_setor || '';
+                document.getElementById('matricula').value = dbData.responsavel?.matricula || dbData.responsavel_matricula || '';
+
+                document.getElementById('descricao-ocorrencia').value = dbData.analise?.descricaoOcorrencia || dbData.desc_ocorrencia || '';
+                document.getElementById('descricao-nao-conformidade').value = dbData.analise?.descricaoNaoConformidade || dbData.desc_nao_conformidade || '';
+                document.getElementById('referencias').value = dbData.analise?.referenciasNormativas || dbData.referencias_normativas || '';
+
+                document.getElementById('acoes-corretivas').value = dbData.acoes?.corretivas || dbData.acoes_corretivas || '';
+                document.getElementById('responsavel-acoes').value = dbData.acoes?.responsavelCorretivas || dbData.responsavel_acoes || '';
+                document.getElementById('acoes-preventivas').value = dbData.acoes?.preventivas || dbData.acoes_preventivas || '';
+                document.getElementById('responsavel-acoes-prev').value = dbData.acoes?.responsavelPreventivas || dbData.responsavel_acoes_prev || '';
+
+                // Imagens
+                if (dbData.registrosIconograficos && Array.isArray(dbData.registrosIconograficos)) {
+                    const btnAdd = document.getElementById('add-image-btn');
+                    dbData.registrosIconograficos.forEach((img, index) => {
+                        if (index > 0) btnAdd.click(); // Cria novo campo se não for o primeiro
+                        
+                        const columns = document.querySelectorAll('.image-column');
+                        const lastCol = columns[columns.length - 1];
+                        
+                        if (lastCol) {
+                            const imgEl = lastCol.querySelector('.image-preview');
+                            const txtEl = lastCol.querySelector('input[type="text"]');
+                            
+                            imgEl.src = img.imagemBase64;
+                            imgEl.style.display = 'block';
+                            imgEl.dataset.base64 = img.imagemBase64;
+                            txtEl.value = img.descricao || '';
+                        }
+                    });
+                }
+            }
+
+            // 3. MODO VISUALIZAÇÃO
+            // --- 3. MODO VISUALIZAÇÃO (CORRIGIDO) ---
+            function setViewMode() {
+                // ADICIONEI 'select' AQUI NA LISTA PARA ELE FICAR CINZA TAMBÉM
+                const inputs = document.querySelectorAll('input, textarea, select');
+                inputs.forEach(i => i.disabled = true);
+                
+                if (salvarBtn) salvarBtn.style.display = 'none';
+                if (addImageBtn) addImageBtn.style.display = 'none';
+                
+                document.querySelectorAll('.delete-image-button').forEach(b => b.style.display = 'none');
+                
+                // Evita duplicar o texto se chamar a função 2 vezes
+                const title = document.querySelector('.header h1');
+                if (title && !title.textContent.includes("(VISUALIZAÇÃO)")) {
+                    title.textContent += " (VISUALIZAÇÃO)";
+                }
+            }       
+
+            // 4. HISTÓRICO
+            function renderHistory(form) {
+                const container = document.querySelector('.form-container');
+                const criadoEm = new Date(form.createdAt).toLocaleDateString('pt-BR');
+                const criadoPor = form.criado_por ? form.criado_por.nome : 'Desconhecido';
+                
+                let html = `<div style="margin-top:40px; padding:20px; background:#f9f9f9; font-size:0.9em; color:#666;">
+                    <h3>Histórico</h3>
+                    <p>Criado por: <strong>${criadoPor}</strong> em ${criadoEm}</p>`;
+                
+                if (form.updatedAt !== form.createdAt) {
+                    const editadoEm = new Date(form.updatedAt).toLocaleDateString('pt-BR');
+                    const editadoPor = form.atualizado_por ? form.atualizado_por.nome : criadoPor;
+                    html += `<p>Última edição por: <strong>${editadoPor}</strong> em ${editadoEm}</p>`;
+                }
+                html += `</div>`;
+                container.insertAdjacentHTML('beforeend', html);
+            }
+
+            // --- CARREGAMENTO INICIAL ---
+            if (formId) {
+                // AQUI ESTAVA O ERRO: AGORA ENVIAMOS O TOKEN!
+                fetch(`http://localhost:5000/api/formularios/${formId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                })
+                .then(res => {
+                    if (res.status === 401) throw new Error("Não autorizado");
+                    if (!res.ok) throw new Error("Erro ao buscar");
+                    return res.json();
+                })
+                .then(form => {
+                    // O backend retorna o objeto completo, os dados do RNC estão em form.dadosRNC
+                    fillForm(form.dadosRNC);
+                    renderHistory(form);
+
+                    if (mode === 'view') {
+                        setViewMode();
+                    } else if (mode === 'edit') {
+                        if (salvarBtn) {
+                            salvarBtn.textContent = "Salvar Alterações";
+                            salvarBtn.style.backgroundColor = "#218838";
+                        }
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Erro ao carregar dados: " + err.message);
+                });
+            }
+
+            // --- SALVAR ---
+            if (salvarBtn) {
+                salvarBtn.addEventListener("click", async (e) => {
+                    e.preventDefault();
+                    salvarBtn.disabled = true;
+                    salvarBtn.textContent = "Processando...";
+
+                    try {
+                        const data = getFormData();
+                        const method = formId ? 'PUT' : 'POST';
+                        const url = formId 
+                            ? `http://localhost:5000/api/formularios/${formId}`
+                            : 'http://localhost:5000/api/formularios';
+
+                        const payload = {
+                            titulo: data.numero ? `RNC #${data.numero}` : "RNC Novo",
+                            descricao: data.responsavel.nome || "RNC preenchido",
+                            status: "completed",
+                            dadosRNC: data
+                        };
+
+                        const response = await fetch(url, {
+                            method: method,
+                            headers: { 
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}` // TOKEN AQUI TAMBÉM
+                            },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (!response.ok) throw new Error('Erro ao salvar');
+
+                        alert("Salvo com sucesso!");
+                        window.close(); // Fecha a aba
+
+                    } catch (error) {
+                        alert("Erro: " + error.message);
+                        salvarBtn.disabled = false;
+                        salvarBtn.textContent = "Tentar Novamente";
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

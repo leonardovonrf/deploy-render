@@ -1362,3 +1362,71 @@ body {
 
 }
 
+.icon-btn.download {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+}
+
+.icon-btn.download:hover {
+    background: #28a745; 
+}
+
+/* Wrapper para posicionar o ícone dentro do select */
+.select-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+/* O ícone (Filtro / Setinhas) */
+.select-wrapper i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #a0aec0; /* Cor do ícone cinza claro */
+    pointer-events: none; /* O clique passa pelo ícone */
+    font-size: 0.9em;
+}
+
+/* O Select em si (Estilo Dark Moderno) */
+.modern-select {
+    appearance: none; /* Remove a setinha padrão feia do navegador */
+    -webkit-appearance: none;
+    background-color: #1a2634; /* Fundo Escuro (igual aos cards) */
+    color: #e2e8f0; /* Texto Claro */
+    border: 1px solid #2d3748; /* Borda sutil */
+    padding: 10px 35px 10px 35px; /* Espaço para o ícone na esquerda e seta na direita */
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 160px;
+    
+    /* Setinha customizada (CSS puro) */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='%23a0aec0'%3E%3Cpath d='M6 8.825L1.175 4 2.238 2.938 6 6.7 9.763 2.938 10.825 4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+}
+
+/* Hover (Passar o mouse) */
+.modern-select:hover {
+    background-color: #24303f; /* Levemente mais claro */
+    border-color: #4a5568;
+}
+
+/* Focus (Clicado/Selecionado) */
+.modern-select:focus {
+    outline: none;
+    border-color: #10B981; /* Verde do tema */
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); /* Brilho verde suave */
+}
+
+/* Opções do dropdown */
+.modern-select option {
+    background-color: #1a2634;
+    color: #fff;
+    padding: 10px;
+}
+
