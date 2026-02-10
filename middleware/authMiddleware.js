@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import Usuario from '../models/Usuario.js';
+import Usuario from '../models/usuario.js';
 
 // 1. PROTECT: Verifica se o usuário está logado (Autenticação)
 const protect = async (req, res, next) => {
