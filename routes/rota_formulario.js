@@ -1,6 +1,6 @@
 import express from 'express';
 import Formulario from '../models/formulario.js';
-import Usuario from '../models/usuario.js';
+import Usuario from '../models/Usuario.js';
 import Contador from '../models/contador.js'; 
 import { protect, authorize } from '../middleware/authMiddleware.js'; // <--- IMPORTANTE
 
