@@ -399,7 +399,9 @@ function printFormsList() {
 }
 
 function generatePrintContent(forms) {
-    const currentUser = authManager.getCurrentUser();
+    // Tenta pegar o usuário do localStorage, senão usa 'Usuário'
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const userName = currentUser ? currentUser.name : 'Usuário';
     const currentDate = new Date().toLocaleDateString('pt-BR');
     
     return `
@@ -427,7 +429,7 @@ function generatePrintContent(forms) {
             </div>
             
             <div class="info">
-                <p><strong>Gerado por:</strong> ${currentUser?.name || 'Usuário'}</p>
+                <p><strong>Gerado por:</strong> ${userName}</p>
                 <p><strong>Data:</strong> ${currentDate}</p>
                 <p><strong>Total de formulários:</strong> ${forms.length}</p>
             </div>
@@ -435,23 +437,32 @@ function generatePrintContent(forms) {
             <table>
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Título</th>
+                        <th>ID (Título)</th> <th>Descrição</th>
                         <th>Status</th>
                         <th>Criado por</th>
                         <th>Data de Criação</th>
                     </tr>
                 </thead>
                 <tbody>
-                    ${forms.map(form => `
+                    ${forms.map(form => {
+                        // Lógica segura para o nome do criador (igual ao renderForms)
+                        const nomeCriador = (form.criado_por && form.criado_por.nome) 
+                                            ? form.criado_por.nome 
+                                            : 'Usuário Deletado';
+                        
+                        // CORREÇÃO DOS CAMPOS AQUI:
+                        // form.titulo (não form.title)
+                        // form.descricao (não form.description)
+                        return `
                         <tr>
-                            <td>${form.id}</td>
-                            <td>${form.title}</td>
+                            <td>${form.titulo || 'Sem Título'}</td>
+                            <td>${form.descricao || ''}</td>
                             <td><span class="status ${form.status}">${getStatusText(form.status)}</span></td>
-                            <td>${form.createdBy}</td>
+                            <td>${nomeCriador}</td>
                             <td>${new Date(form.createdAt).toLocaleDateString('pt-BR')}</td>
                         </tr>
-                    `).join('')}
+                        `;
+                    }).join('')}
                 </tbody>
             </table>
         </body>

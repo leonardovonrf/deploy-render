@@ -7,9 +7,11 @@ class AuthManager {
     }
 
     init() {
-        // Verificar se há usuário logado no localStorage
+        // Verificar se há usuário e TOKEN salvos
         const savedUser = localStorage.getItem('currentUser');
-        if (savedUser) {
+        const token = localStorage.getItem('token');
+
+        if (savedUser && token) {
             this.currentUser = JSON.parse(savedUser);
             this.isAuthenticated = true;
             
@@ -25,51 +27,53 @@ class AuthManager {
         }
     }
 
-    // Credenciais de demonstração
-    validateCredentials(email, password) {
-        const validCredentials = [
-            { email: 'admin@bombeiros.com', password: 'admin123', name: 'Administrador', role: 'admin' },
-            { email: 'bombeiro@seguranca.com', password: 'bombeiro123', name: 'João Silva', role: 'user' },
-            { email: 'supervisor@bombeiros.com', password: 'super123', name: 'Maria Santos', role: 'supervisor' },
-            { email: 'demo', password: 'demo', name: 'Usuário Demo', role: 'user' }
-        ];
-
-        return validCredentials.find(cred => 
-            (cred.email === email || cred.email === email.toLowerCase()) && 
-            cred.password === password
-        );
-    }
-
+    // A NOVA FUNÇÃO DE LOGIN (CONECTADA AO BACKEND)
     async login(email, password) {
-        return new Promise((resolve, reject) => {
-            // Simular delay de rede
-            setTimeout(() => {
-                const user = this.validateCredentials(email, password);
-                
-                if (user) {
-                    this.currentUser = {
-                        id: Date.now(),
-                        name: user.name,
-                        email: user.email,
-                        role: user.role,
-                        loginTime: new Date().toISOString()
-                    };
-                    
-                    this.isAuthenticated = true;
-                    localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-                    
-                    resolve(this.currentUser);
-                } else {
-                    reject(new Error('Credenciais inválidas'));
-                }
-            }, 1500); // Simular 1.5s de loading
-        });
+        try {
+            const response = await fetch('https://deploy-render-5o3w.onrender.com/api/usuarios/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, senha: password })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                // Se o servidor retornar erro (401, 400, etc), lança uma exceção
+                throw new Error(data.message || 'Falha ao realizar login');
+            }
+
+            // Se o login funcionou, salva os dados
+            this.currentUser = {
+                id: data.id,
+                name: data.name,
+                email: data.email,
+                role: data.role,
+                // Não salvamos a senha, mas salvamos o token se precisar usar depois
+            };
+            
+            this.isAuthenticated = true;
+            
+            // Salva no navegador
+            localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+            localStorage.setItem('token', data.token); // <--- O PASSE DE SEGURANÇA
+
+            return this.currentUser;
+
+        } catch (error) {
+            console.error("Erro de login:", error);
+            throw error; // Repassa o erro para ser mostrado na tela
+        }
     }
 
     logout() {
         this.currentUser = null;
         this.isAuthenticated = false;
+        // Limpa tudo
         localStorage.removeItem('currentUser');
+        localStorage.removeItem('token'); 
         localStorage.removeItem('userPreferences');
         this.redirectToLogin();
     }
@@ -83,7 +87,10 @@ class AuthManager {
     }
 
     redirectToLogin() {
-        window.location.href = 'index.html';
+        // Evita loop de redirecionamento se já estiver na login page
+        if (!window.location.pathname.includes('index.html')) {
+            window.location.href = 'index.html';
+        }
     }
 
     redirectToDashboard() {
@@ -92,12 +99,12 @@ class AuthManager {
 
     // Verificar se o usuário tem permissão para uma ação
     hasPermission(action) {
-        if (!this.isAuthenticated) return false;
+        if (!this.isAuthenticated || !this.currentUser) return false;
         
         const permissions = {
             'admin': ['create', 'read', 'update', 'delete', 'manage_users'],
-            'supervisor': ['create', 'read', 'update', 'delete'],
-            'user': ['create', 'read', 'update']
+            'supervisor': ['create', 'read', 'update'],
+            'user': ['create', 'read',]
         };
         
         const userPermissions = permissions[this.currentUser.role] || [];
@@ -125,36 +132,8 @@ function initLoginForm() {
     const loginForm = document.getElementById('loginForm');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
-    const loginBtn = document.getElementById('loginBtn');
-    const togglePassword = document.getElementById('togglePassword');
+    const togglePassword = document.getElementById('togglePassword'); // Se existir ícone de olho
     const rememberMe = document.getElementById('rememberMe');
-
-    // Toggle de visibilidade da senha
-    if (togglePassword) {
-        togglePassword.addEventListener('click', function() {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            
-            const icon = this.querySelector('i');
-            icon.classList.toggle('fa-eye');
-            icon.classList.toggle('fa-eye-slash');
-        });
-    }
-
-    // Validação em tempo real
-    emailInput.addEventListener('input', function() {
-        clearError('emailError');
-        if (this.value.trim() === '') {
-            showError('emailError', 'Email ou usuário é obrigatório');
-        }
-    });
-
-    passwordInput.addEventListener('input', function() {
-        clearError('passwordError');
-        if (this.value.trim() === '') {
-            showError('passwordError', 'Senha é obrigatória');
-        }
-    });
 
     // Submissão do formulário
     loginForm.addEventListener('submit', async function(e) {
@@ -163,29 +142,19 @@ function initLoginForm() {
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
         
-        // Validação
-        let hasErrors = false;
-        
-        if (!email) {
-            showError('emailError', 'Email ou usuário é obrigatório');
-            hasErrors = true;
+        if (!email || !password) {
+            showToast('Preencha todos os campos', 'error');
+            return;
         }
-        
-        if (!password) {
-            showError('passwordError', 'Senha é obrigatória');
-            hasErrors = true;
-        }
-        
-        if (hasErrors) return;
         
         // Mostrar loading
         setLoginLoading(true);
         
         try {
-            const user = await authManager.login(email, password);
+            await authManager.login(email, password);
             
-            // Salvar preferência "lembrar de mim"
-            if (rememberMe.checked) {
+            // Salvar preferência "lembrar de mim" (apenas o email)
+            if (rememberMe && rememberMe.checked) {
                 localStorage.setItem('rememberUser', email);
             } else {
                 localStorage.removeItem('rememberUser');
@@ -193,7 +162,7 @@ function initLoginForm() {
             
             showToast('Login realizado com sucesso!', 'success');
             
-            // Pequeno delay antes do redirecionamento
+            // Pequeno delay visual antes do redirecionamento
             setTimeout(() => {
                 authManager.redirectToDashboard();
             }, 1000);
@@ -206,13 +175,10 @@ function initLoginForm() {
 
     // Carregar email salvo se "lembrar de mim" estava marcado
     const rememberedUser = localStorage.getItem('rememberUser');
-    if (rememberedUser) {
+    if (rememberedUser && emailInput) {
         emailInput.value = rememberedUser;
-        rememberMe.checked = true;
+        if (rememberMe) rememberMe.checked = true;
     }
-
-    // Adicionar credenciais de demonstração na tela
-    //addDemoCredentials();
 }
 
 function initUserMenu() {
@@ -231,7 +197,7 @@ function initUserMenu() {
     if (userBtn) {
         userBtn.addEventListener('click', function(e) {
             e.stopPropagation();
-            userDropdown.classList.toggle('show');
+            if(userDropdown) userDropdown.classList.toggle('show');
         });
     }
 
@@ -247,73 +213,39 @@ function initUserMenu() {
         logoutBtn.addEventListener('click', function(e) {
             e.preventDefault();
             
-            showConfirmModal(
-                'Tem certeza que deseja sair do sistema?',
-                () => {
-                    showToast('Logout realizado com sucesso!', 'success');
-                    setTimeout(() => {
+            // Usa a função global showConfirmModal se existir, ou logout direto
+            if (typeof showConfirmModal === 'function') {
+                showConfirmModal(
+                    'Tem certeza que deseja sair do sistema?',
+                    () => {
                         authManager.logout();
-                    }, 1000);
+                    }
+                );
+            } else {
+                if(confirm('Tem certeza que deseja sair?')) {
+                    authManager.logout();
                 }
-            );
+            }
         });
     }
 }
 
 function setLoginLoading(loading) {
     const loginBtn = document.getElementById('loginBtn');
+    if (!loginBtn) return;
+
     const btnText = loginBtn.querySelector('.btn-text');
     const loadingSpinner = loginBtn.querySelector('.loading-spinner');
     
     if (loading) {
         loginBtn.classList.add('loading');
         loginBtn.disabled = true;
-        btnText.style.opacity = '0';
-        loadingSpinner.style.display = 'block';
+        if(btnText) btnText.style.opacity = '0';
+        if(loadingSpinner) loadingSpinner.style.display = 'block';
     } else {
         loginBtn.classList.remove('loading');
         loginBtn.disabled = false;
-        btnText.style.opacity = '1';
-        loadingSpinner.style.display = 'none';
+        if(btnText) btnText.style.opacity = '1';
+        if(loadingSpinner) loadingSpinner.style.display = 'none';
     }
 }
-
-function showError(elementId, message) {
-    const errorElement = document.getElementById(elementId);
-    if (errorElement) {
-        errorElement.textContent = message;
-        errorElement.style.display = 'block';
-    }
-}
-
-function clearError(elementId) {
-    const errorElement = document.getElementById(elementId);
-    if (errorElement) {
-        errorElement.style.display = 'none';
-    }
-}
-
-function addDemoCredentials() {
-    // Adicionar informações de credenciais de demonstração
-    const loginFooter = document.querySelector('.login-footer');
-    if (loginFooter) {
-        const demoInfo = document.createElement('div');
-        demoInfo.className = 'demo-credentials';
-        demoInfo.style.marginTop = '1rem';
-        demoInfo.style.padding = '1rem';
-        demoInfo.style.backgroundColor = 'var(--bg-secondary)';
-        demoInfo.style.borderRadius = 'var(--radius-md)';
-        demoInfo.style.fontSize = '0.75rem';
-        demoInfo.style.color = 'var(--text-secondary)';
-        
-        demoInfo.innerHTML = `
-            <strong style="color: var(--text-primary);">Credenciais de Demonstração:</strong><br>
-            <strong>Admin:</strong> admin@bombeiros.com / admin123<br>
-            <strong>Usuário:</strong> demo / demo<br>
-            <strong>Supervisor:</strong> supervisor@bombeiros.com / super123
-        `;
-        
-        loginFooter.appendChild(demoInfo);
-    }
-}
-
