@@ -453,7 +453,7 @@
             try {
                 const token = localStorage.getItem('token');
                 // IMPORTANTE: Verifica se a rota existe no backend
-                const res = await fetch(`http://localhost:5000/api/usuarios/lista`, {
+                const res = await fetch(`https://deploy-render-5o3w.onrender.com/api/usuarios/lista`, {
                     headers: { 'Authorization': `Bearer ${token}` },
                     method: 'GET'
                 });
