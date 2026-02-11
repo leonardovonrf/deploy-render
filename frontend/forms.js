@@ -18,7 +18,7 @@ class FormsManager {
         try {
             const token = localStorage.getItem('token'); 
             
-            const response = await fetch(`https://deploy-render-5o3w.onrender.com/api/formularios?ordem=${ordem}`, {
+            const response = await fetch(`http://localhost:5000/api/formularios?ordem=${ordem}`, {
                 headers: {
                     'Authorization': `Bearer ${token}` 
                 }
@@ -52,7 +52,7 @@ class FormsManager {
         try {
             const token = localStorage.getItem('token');
 
-            const response = await fetch(`https://deploy-render-5o3w.onrender.com/api/formularios/${id}`, {
+            const response = await fetch(`http://localhost:5000/api/formularios/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ class FormsManager {
         try {
             const token = localStorage.getItem('token');
             
-            const response = await fetch(`https://deploy-render-5o3w.onrender.com/api/formularios/${id}`, {
+            const response = await fetch(`http://localhost:5000/api/formularios/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -563,7 +563,7 @@ async function generateReportPDF(event, formId) {
         const token = localStorage.getItem('token');
         
         // 1. Busca os dados
-        const res = await fetch(`https://deploy-render-5o3w.onrender.com/api/formularios/${formId}`, {
+        const res = await fetch(`http://localhost:5000/api/formularios/${formId}`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         
