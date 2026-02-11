@@ -495,7 +495,7 @@
 
             try {
                 const token = localStorage.getItem('token');
-                const res = await fetch('http://localhost:5000/api/usuarios', {
+                const res = await fetch('https://deploy-render-5o3w.onrender.com/api/usuarios', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                     body: JSON.stringify({ nome, email, senha, role })
